@@ -8,41 +8,10 @@ add_compile_options(-std=c++11)
 # Human_make_photo adding libraries START #
 ###########################################
 
-option(LINK_SHARED_ZED "Link with the ZED SDK shared executable" ON)
-
-if(COMMAND cmake_policy)
-        cmake_policy(SET CMP0003 OLD)
-        cmake_policy(SET CMP0004 OLD)
-        cmake_policy(SET CMP0015 OLD)
-endif(COMMAND cmake_policy)
-
-find_package(ZED 3 REQUIRED)
-find_package(GLUT REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(OpenGL REQUIRED)
-find_package(CUDA REQUIRED)
 find_package(OpenCV REQUIRED)
 
-IF(NOT WIN32)
-    SET(SPECIAL_OS_LIBS "pthread" "X11")
-    add_definitions(-Wno-write-strings)
-ENDIF()
-
-include_directories(${ZED_INCLUDE_DIRS})
-include_directories(${GLEW_INCLUDE_DIRS})
-include_directories(${GLUT_INCLUDE_DIR})
-include_directories(${CUDA_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-# write correct path to dlib library
-add_subdirectory(/home/kamil/Dlib/dlib/dlib dlib_build)
-
-link_directories(${ZED_LIBRARY_DIR})
-link_directories(${GLEW_LIBRARY_DIRS})
-link_directories(${GLUT_LIBRARY_DIRS})
-link_directories(${OpenGL_LIBRARY_DIRS})
-link_directories(${CUDA_LIBRARY_DIRS})
 
 FILE(GLOB_RECURSE SRC_FILES src/*.c*)
 FILE(GLOB_RECURSE TEST_SRC_FILES test_src/*.c*)
@@ -119,22 +88,9 @@ add_executable(${PROJECT_NAME} ${HDR_FILES} ${SRC_FILES} main_src/main.cpp)
 #add_executable(${PROJECT_NAME}_tests ${HDR_FILES} ${SRC_FILES} ${TEST_SRC_FILES} )
 add_definitions(-std=c++14)
 
-if (LINK_SHARED_ZED)
-    SET(ZED_LIBS ${ZED_LIBRARIES} ${CUDA_CUDA_LIBRARY} ${CUDA_CUDART_LIBRARY} ${CUDA_DEP_LIBRARIES_ZED})
-else()
-    SET(ZED_LIBS ${ZED_STATIC_LIBRARIES} ${CUDA_CUDA_LIBRARY} ${CUDA_LIBRARY})
-endif()
-
 target_link_libraries(${PROJECT_NAME}
-                        ${SPECIAL_OS_LIBS}
-                        ${ZED_LIBS}
-                        ${OPENGL_LIBRARIES}
-                        ${GLUT_LIBRARY}
-                        ${GLEW_LIBRARIES}
                         ${OpenCV_LIBRARIES}
-                        ${catkin_LIBRARIES}
-                        dlib::dlib)
-                        #dlib)
+                        ${catkin_LIBRARIES})
 
 #target_link_libraries(${PROJECT_NAME}_tests
 #                        ${SPECIAL_OS_LIBS}

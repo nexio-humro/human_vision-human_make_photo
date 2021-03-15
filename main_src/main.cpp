@@ -5,10 +5,6 @@
 #include <RosTopics.hpp>
 #include <MainData.hpp>
 #include <RosServices.hpp>
-#include <SystemFunctions.hpp>
-#include <DlibFrontalFaceDetection.hpp>
-#include <FaceCuttingFunctions.hpp>
-#include <DlibFrontalFaceDetectionPaths.hpp>
 
 int main(int argc, char **argv) 
 {
@@ -19,11 +15,8 @@ int main(int argc, char **argv)
 	ros::Subscriber objectsGetter = node.subscribe("/zed2/zed_node/obj_det/objects", 1000, RT::grab_objects);
 	MD::setDoPhotoServer(node, "doPhoto", RS::doPhoto);
 	MD::setSendFaceVectorClient(node, "/human_recognition/facesVector");
-
-	ros::Rate loop_rate(10);
-
-	std::string path = DFFDP::getPathToDetector();
-	DlibFrontalFaceDetection::instance()->loadModel(path.c_str());
+	MD::setSendFindFaceVectorsClient(node, "/human_dlib_face_recognition/findFaceVectors");
+	MD::setCutFacesClient(node, "/human_face_cutter/cutFaces");
 	
 	ros::spin();
 	

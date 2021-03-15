@@ -7,11 +7,10 @@
 
 #include "human_vision_exchange/DoPhotoReceiver.h"
 #include "human_vision_exchange/FaceVectorReceiver.h"
-#include <DlibFrontalFaceDetection.hpp>
-#include <FaceCuttingFunctions.hpp>
-#include <DlibFrontalFaceDetectionPaths.hpp>
 #include <ZedData.hpp>
 #include <MainData.hpp>
+#include "BodyPartEnum.hpp"
+#include <SystemFunctions.hpp>
 
 namespace RS
 {

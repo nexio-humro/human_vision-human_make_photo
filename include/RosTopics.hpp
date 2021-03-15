@@ -5,6 +5,7 @@
 
 #include "ros/ros.h"
 #include "sensor_msgs/Image.h"
+#include "geometry_msgs/Point32.h"
 #include "zed_interfaces/Objects.h"
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/core.hpp>

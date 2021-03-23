@@ -87,7 +87,7 @@ namespace RS
 							
 							std::string path = SF::getPathToCurrentDirectory() + "../output/face" + std::to_string(counter);
 							path = path + ".png";
-							std::cout<<"path = "<<path<<std::endl;
+//							std::cout<<"path = "<<path<<std::endl;
 							cv::imwrite(path, cvImage);
 						}
 						
@@ -98,6 +98,7 @@ namespace RS
 						}
 						MD::sendFaceVectorClientRequest(faceVectorClientData);
 						res.status = true;
+						counter++;
 					}
 				}
 			}			

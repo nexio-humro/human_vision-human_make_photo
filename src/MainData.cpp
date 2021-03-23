@@ -23,7 +23,6 @@ namespace MD
 	void sendFaceVectorClientRequest(human_vision_exchange::FaceVectorReceiver& fvr)
 	{
 		sendFaceVector.call(fvr);
-		std::cout<<"sendFaceVectorClientRequest: fvr.response.status = "<<fvr.response.status<<std::endl;
 	}
 	
 	void setSendFaceVectorClient(ros::NodeHandle& node, std::string serviceName)

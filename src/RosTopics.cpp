@@ -8,7 +8,7 @@ namespace RT
 		ZD::saveImage(cv_ptr);
 	}
 	
-	void grab_objects(const zed_interfaces::Objects& objects)
+	void grab_objects(const human_vision_exchange::Objects& objects)
 	{
 		std::vector<human_vision_exchange::Keypoints2d> keypoints2dVector;
 		keypoints2dVector.resize(objects.objects.size());
@@ -17,11 +17,11 @@ namespace RT
 		{
 			human_vision_exchange::Keypoints2d keypoints2d;
 			
-            for (size_t c = 0; c < objects.objects[i].bbox_2d.size(); c++) 
+            for (size_t c = 0; c < objects.objects[i].keypoint_2d.size(); c++) 
             {
 				geometry_msgs::Point32 point;
-				point.x = objects.objects[i].bbox_2d[c].x;
-				point.y = objects.objects[i].bbox_2d[c].y;
+				point.x = objects.objects[i].keypoint_2d[c].x;
+				point.y = objects.objects[i].keypoint_2d[c].y;
 				point.z = 0.0;
 				
 				keypoints2d.points[c] = point;

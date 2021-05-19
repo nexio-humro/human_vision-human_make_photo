@@ -11,9 +11,6 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "human_make_photo");
 	ros::NodeHandle node("/human_make_photo/");
 	
-//	ros::Subscriber imageGetter = node.subscribe("/zed2/zed_node/left/image_rect_color", 1000, RT::grab_image);
-//	ros::Subscriber objectsGetter = node.subscribe("/zed2/zed_node/obj_det/objects", 1000, RT::grab_objects);
-
 	ros::Subscriber imageGetter = node.subscribe("/human_zed_talker/leftImage", 1000, RT::grab_image);
 	ros::Subscriber objectsGetter = node.subscribe("/human_zed_talker/objects", 1000, RT::grab_objects);
 	MD::setDoPhotoServer(node, "doPhoto", RS::doPhoto);

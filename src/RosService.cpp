@@ -92,10 +92,11 @@ namespace RS
 						}
 						
 						human_vision_exchange::FaceVectorReceiver faceVectorClientData;
-						for(size_t i = 0; i < findFaceVectors.response.faceVectors.faces[0].points.size(); i++)
+/*						for(size_t i = 0; i < findFaceVectors.response.faceVectors.faces[0].points.size(); i++)
 						{
 							faceVectorClientData.request.points[i] = findFaceVectors.response.faceVectors.faces[0].points[i];
-						}
+						}  */
+						faceVectorClientData.request.faceDescription = findFaceVectors.response.faceVectors.faces[0];
 						MD::sendFaceVectorClientRequest(faceVectorClientData);
 						res.status = true;
 						counter++;

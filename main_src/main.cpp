@@ -13,9 +13,12 @@ int main(int argc, char **argv)
 	
 	ros::Subscriber imageGetter = node.subscribe("/human_zed_talker/leftImage", 1000, RT::grab_image);
 	ros::Subscriber objectsGetter = node.subscribe("/human_zed_talker/objects", 1000, RT::grab_objects);
-	MD::setDoPhotoServer(node, "doPhoto", RS::doPhoto);
-	MD::setSendFaceVectorClient(node, "/human_recognition/facesVector");
-	MD::setSendFindFaceVectorsClient(node, "/human_dlib_face_recognition/findFaceVectors");
+//	MD::setDoPhotoServer(node, "doPhoto", RS::doPhoto);
+	MD::setDoPhotoServer(node, "doPhoto", RS::doPhotoFacenet);
+//	MD::setSendFaceVectorClient(node, "/human_recognition/facesVector");
+	MD::setSendFaceVectorFacenetClient(node, "/human_recognition/facesVectorFacenet");
+//	MD::setSendFindFaceVectorsClient(node, "/human_dlib_face_recognition/findFaceVectors");
+	MD::setSendFindFaceVectorsFacenetClient(node, "/human_facenet_face_recognition/findFaceVectors");
 	MD::setCutFacesClient(node, "/human_face_cutter/cutFaces");
 	
 	ros::spin();

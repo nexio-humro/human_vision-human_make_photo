@@ -72,10 +72,10 @@ namespace RS
 				if(cutFaces.response.faces.size() > 0)
 				{
 					// find faces vectors
-					human_vision_exchange::FindFaceVectors findFaceVectors;
+					human_vision_exchange::FindFaceVectorsFacenet findFaceVectors;
 					findFaceVectors.request.faces = cutFaces.response.faces;
 					
-					MD::sendFindFaceVectorsClientRequest(findFaceVectors);
+					MD::sendFindFaceVectorsFacenetClientRequest(findFaceVectors);
 					
 					if(findFaceVectors.response.faceVectors.faces.size() > 0)
 					{
@@ -91,13 +91,79 @@ namespace RS
 							cv::imwrite(path, cvImage);
 						}
 						
-						human_vision_exchange::FaceVectorReceiver faceVectorClientData;
+						human_vision_exchange::FaceVectorReceiverFacenet faceVectorClientData;
 /*						for(size_t i = 0; i < findFaceVectors.response.faceVectors.faces[0].points.size(); i++)
 						{
 							faceVectorClientData.request.points[i] = findFaceVectors.response.faceVectors.faces[0].points[i];
 						}  */
 						faceVectorClientData.request.faceDescription = findFaceVectors.response.faceVectors.faces[0];
-						MD::sendFaceVectorClientRequest(faceVectorClientData);
+						MD::sendFaceVectorFacenetClientRequest(faceVectorClientData);
+						res.status = true;
+						counter++;
+					}
+				}
+			}			
+		}
+		
+		return true;
+	}
+	
+	bool doPhotoFacenet(human_vision_exchange::DoPhotoReceiver::Request  &req, human_vision_exchange::DoPhotoReceiver::Response &res)
+	{
+//		std::cout<<"doPhotoFacenet(): start"<<std::endl;
+		int counter = 0;
+		
+		while(counter < 1)
+		{
+			ros::spinOnce();
+			
+			std::vector<human_vision_exchange::Keypoints2d> keypoints2dVector = ZD::getKeypoints2d();
+			cv::Mat wholeImage = ZD::getImage();
+			
+			if(keypoints2dVector.size() > 0)
+			{ 
+				// cut faces
+				human_vision_exchange::CutFaces cutFaces;
+				cutFaces.request.keypoints.resize(keypoints2dVector.size());
+				for(size_t i = 0; i < keypoints2dVector.size(); i++)
+				{
+					cutFaces.request.keypoints[i] = keypoints2dVector.at(i);
+				}
+				
+				cv_bridge::CvImage cvImage = cv_bridge::CvImage(std_msgs::Header(), "bgr8", wholeImage);	
+				cvImage.toImageMsg(cutFaces.request.image);
+				
+				MD::sendCutFacesClientRequest(cutFaces);
+				
+				if(cutFaces.response.faces.size() > 0)
+				{
+					// find faces vectors
+					human_vision_exchange::FindFaceVectorsFacenet findFaceVectors;
+					findFaceVectors.request.faces = cutFaces.response.faces;
+					
+					MD::sendFindFaceVectorsFacenetClientRequest(findFaceVectors);
+					
+					if(findFaceVectors.response.faceVectors.faces.size() > 0)
+					{
+						// save image
+						if(true)
+						{
+							cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(cutFaces.response.faces[0], sensor_msgs::image_encodings::BGR8);
+							cv::Mat cvImage = cv_ptr->image;
+							
+							std::string path = SF::getPathToCurrentDirectory() + "../output/face" + std::to_string(counter);
+							path = path + ".png";
+//							std::cout<<"path = "<<path<<std::endl;
+							cv::imwrite(path, cvImage);
+						}
+						
+						human_vision_exchange::FaceVectorReceiverFacenet faceVectorClientData;
+/*						for(size_t i = 0; i < findFaceVectors.response.faceVectors.faces[0].points.size(); i++)
+						{
+							faceVectorClientData.request.points[i] = findFaceVectors.response.faceVectors.faces[0].points[i];
+						}  */
+						faceVectorClientData.request.faceDescription = findFaceVectors.response.faceVectors.faces[0];
+						MD::sendFaceVectorFacenetClientRequest(faceVectorClientData);
 						res.status = true;
 						counter++;
 					}

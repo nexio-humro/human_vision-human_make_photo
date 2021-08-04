@@ -148,7 +148,8 @@ namespace RS
 						// save image
 						if(true)
 						{
-							cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(cutFaces.response.faces[0], sensor_msgs::image_encodings::BGR8);
+//							cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(cutFaces.response.faces[0], sensor_msgs::image_encodings::BGR8);
+							cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(cutFaces.response.faces[0], sensor_msgs::image_encodings::RGB8);
 							cv::Mat cvImage = cv_ptr->image;
 							
 							std::string path = SF::getPathToCurrentDirectory() + "../output/face" + std::to_string(counter);

@@ -155,6 +155,9 @@ namespace RS
 							std::string path = SF::getPathToCurrentDirectory() + "../output/face" + std::to_string(counter);
 							path = path + ".png";
 //							std::cout<<"path = "<<path<<std::endl;
+
+							// swap faceImage channels imwrtie needs cm::mat in BGR
+							cv::cvtColor(cvImage, cvImage, cv::COLOR_RGB2BGR);
 							cv::imwrite(path, cvImage);
 						}
 						
